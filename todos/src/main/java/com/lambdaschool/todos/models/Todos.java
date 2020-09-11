@@ -7,28 +7,28 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "todos")
-public class Todo {
+public class Todos {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long todoid;
 
-  @Column(nullable = false)
+  @Column(nullable = false, unique = true)
   private String description;
 
-  private boolean completed;
+  private boolean completed = true;
 
   @ManyToOne
-  @JoinColumn(name ="userid", nullable = false)
+  @JoinColumn(name ="userid")
   @JsonIgnoreProperties(value= "todos", allowSetters = true)
   private User user;
 
-  public Todo() {
+  public Todos() {
   }
 
-  public Todo(long todoid, String description, boolean completed) {
-    this.todoid = todoid;
+  public Todos(User user, String description) {
+    this.user = user;
     this.description = description;
-    this.completed = completed;
+    this.completed = false;
   }
 
   public long getTodoid() {
@@ -53,5 +53,13 @@ public class Todo {
 
   public void setCompleted(boolean completed) {
     this.completed = completed;
+  }
+
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
   }
 }
